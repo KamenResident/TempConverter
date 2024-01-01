@@ -1,9 +1,11 @@
+import javax.swing.GroupLayout;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
+import javax.swing.ImageIcon;
 import java.awt.Color;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
@@ -25,7 +27,7 @@ public class TempConverter extends JFrame {
     private void init() {
         setTitle("Temperature Converter");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setSize(500, 200);
+        setSize(500, 400);
         setLocationRelativeTo(null);
         setLayout(new FlowLayout());
         setResizable(false);
@@ -34,8 +36,14 @@ public class TempConverter extends JFrame {
     private void createComponents() {
         
         JPanel mainPanel = new JPanel();
-        mainPanel.setLayout(new FlowLayout());
+        GroupLayout layout = new GroupLayout(mainPanel);
+        mainPanel.setLayout(layout);
+        layout.setAutoCreateGaps(true);
+        layout.setAutoCreateContainerGaps(true);
         mainPanel.setSize(500, 200);
+        ImageIcon clouds = new ImageIcon("/clouds.jpg");
+        JLabel backgroundLabel = new JLabel(clouds);
+        mainPanel.add(backgroundLabel);
 
         JPanel panel = new JPanel();
         panel.setBounds(0, 0, 500, 100);
@@ -54,6 +62,8 @@ public class TempConverter extends JFrame {
 
         activateButton(validButton, textfield, textfield2, 0);
         activateButton(validButton2, textfield2, textfield, 1);
+
+        
   
         panel.add(label);
         panel.add(textfield);
@@ -61,8 +71,19 @@ public class TempConverter extends JFrame {
         panel2.add(label2);
         panel2.add(textfield2);
         panel2.add(validButton2);
-        mainPanel.add(panel);
-        mainPanel.add(panel2);
+        layout.setHorizontalGroup(
+            layout.createSequentialGroup()
+            .addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
+                .addComponent(panel)
+                .addComponent(panel2))
+        );
+        layout.setVerticalGroup(
+            layout.createSequentialGroup()           
+            .addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
+                .addComponent(panel))           
+            .addComponent(panel2)
+        );
+
         add(mainPanel);
     }
 
