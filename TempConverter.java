@@ -1,4 +1,5 @@
 import javax.imageio.ImageIO;
+import javax.swing.BorderFactory;
 import javax.swing.GroupLayout;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -7,8 +8,13 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
+import javax.swing.border.Border;
+
 import java.awt.Color;
+import java.awt.Component;
+import java.awt.Container;
 import java.awt.FlowLayout;
+import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
@@ -27,16 +33,31 @@ public class TempConverter extends JFrame {
         createComponents();
     }
 
+    /**
+     * Used to initialize the contents
+     */
     private void init() {
         setTitle("Temperature Converter");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setSize(500, 400);
         setLocationRelativeTo(null);
         setResizable(false);
+
+        // Background image for the application.
+        try {
+            setContentPane(new JLabel(new ImageIcon(ImageIO.read(new File("clouds.jpg")))));
+            setLayout(new FlowLayout());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
+    /**
+     * Create the necessary components for the application.
+     */
     private void createComponents() {
-        
+     
+        // Main panel to house the buttons and text fields.
         JPanel mainPanel = new JPanel();
         GroupLayout layout = new GroupLayout(mainPanel);
         mainPanel.setLayout(layout);
@@ -44,63 +65,76 @@ public class TempConverter extends JFrame {
         layout.setAutoCreateContainerGaps(true);
         mainPanel.setSize(500, 200);
 
-        try {
-            setContentPane(new JLabel(new ImageIcon(ImageIO.read(new File("clouds.jpg")))));
-            setLayout(new FlowLayout());
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        // Border for the separate Fahrenheit and Celsius panels.
+        Border outline = BorderFactory.createLineBorder(Color.BLACK);
 
-        
-
-        JPanel panel = new JPanel();
-        panel.setBounds(0, 0, 500, 100);
-        panel.setBackground(Color.WHITE);
-
-        JPanel panel2 = new JPanel();
-        panel2.setBounds(0, 200, 500, 100);
-        panel2.setBackground(Color.WHITE);
-
-        JTextField textfield = new JTextField(3);
-        JTextField textfield2 = new JTextField(3);
+        // Fahrenheit panel and its components
+        JPanel fahrenheitPanel = new JPanel();
+        fahrenheitPanel.setBounds(0, 0, 500, 100);
+        fahrenheitPanel.setBackground(Color.WHITE);
+        fahrenheitPanel.setBorder(outline);
+        JTextField textfield = new JTextField(3);           // Input field for Fahrenheit value.
+        JLabel label = new JLabel("Fahrenheit (F):");           
         JButton validButton = new JButton("To Celsius");
-        JButton validButton2 = new JButton("To Fahrenheit");
-        JLabel label = new JLabel("Fahrenheit (F):");
-        JLabel label2 = new JLabel("Celsius (C):");
+        validButton.setBackground(Color.ORANGE);
+        fahrenheitPanel.add(label);
+        fahrenheitPanel.add(textfield);
+        fahrenheitPanel.add(validButton);
 
+        // Celsius panel and its components
+        JPanel celsiusPanel = new JPanel();
+        celsiusPanel.setBounds(0, 200, 500, 100);
+        celsiusPanel.setBackground(Color.WHITE);
+        celsiusPanel.setBorder(outline);       
+        JTextField textfield2 = new JTextField(3);          // Input field for Celsius value.        
+        JLabel label2 = new JLabel("Celsius (C):");      
+        JButton validButton2 = new JButton("To Fahrenheit");
+        validButton2.setBackground(Color.CYAN);
+        celsiusPanel.add(label2);
+        celsiusPanel.add(textfield2);
+        celsiusPanel.add(validButton2);
+        
+        // Enables functionality of the buttons for temperature conversion.
         activateButton(validButton, textfield, textfield2, 0);
         activateButton(validButton2, textfield2, textfield, 1);
-  
-        panel.add(label);
-        panel.add(textfield);
-        panel.add(validButton);
-        panel2.add(label2);
-        panel2.add(textfield2);
-        panel2.add(validButton2);
+
+        // Default font for the application.
+        Font font = new Font(Font.SANS_SERIF, Font.PLAIN, 14);       
+        changeFont(fahrenheitPanel, font);       
+        changeFont(celsiusPanel, font);
+
         layout.setHorizontalGroup(
             layout.createSequentialGroup()
             .addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
-                .addComponent(panel)
-                .addComponent(panel2))
+                .addComponent(fahrenheitPanel)
+                .addComponent(celsiusPanel))
         );
         layout.setVerticalGroup(
             layout.createSequentialGroup()           
             .addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
-                .addComponent(panel))           
-            .addComponent(panel2)
+                .addComponent(fahrenheitPanel))           
+            .addComponent(celsiusPanel)
         );
 
         mainPanel.setOpaque(false);
         add(mainPanel);
     }
 
-    private void activateButton(JButton jb, JTextField tf, JTextField tf2, int degree) {
+    /**
+     * 
+     * 
+     * @param jb
+     * @param tf
+     * @param tf2
+     * @param choice
+     */
+    private void activateButton(JButton jb, JTextField tf, JTextField tf2, int choice) {
         jb.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 try {
                     double d = Double.parseDouble(tf.getText());
-                    if (degree == 0) {
+                    if (choice == 0) {
                         d = (d - 32) * (5.0 / 9.0);
                     } else {
                         d = (d * (9.0 / 5.0)) + 32;
@@ -114,6 +148,21 @@ public class TempConverter extends JFrame {
                 tf.setText("");
             }
         });
+    }
+
+    /**
+     * 
+     * 
+     * @param component
+     * @param font
+     */
+    private static void changeFont (Component component, Font font) {
+        component.setFont(font);
+        if (component instanceof Container) {
+            for (Component comp : ((Container) component).getComponents()) {
+                changeFont(comp, font);
+            }
+        }
     }
 
 }
