@@ -1,15 +1,18 @@
+import javax.imageio.ImageIO;
 import javax.swing.GroupLayout;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
-import javax.swing.ImageIcon;
 import java.awt.Color;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
+import java.io.IOException;
 
 /**
  * An application used to convert temperature values in either Celsius or Fahrenheit.
@@ -29,7 +32,6 @@ public class TempConverter extends JFrame {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setSize(500, 400);
         setLocationRelativeTo(null);
-        setLayout(new FlowLayout());
         setResizable(false);
     }
 
@@ -41,9 +43,15 @@ public class TempConverter extends JFrame {
         layout.setAutoCreateGaps(true);
         layout.setAutoCreateContainerGaps(true);
         mainPanel.setSize(500, 200);
-        ImageIcon clouds = new ImageIcon("/clouds.jpg");
-        JLabel backgroundLabel = new JLabel(clouds);
-        mainPanel.add(backgroundLabel);
+
+        try {
+            setContentPane(new JLabel(new ImageIcon(ImageIO.read(new File("clouds.jpg")))));
+            setLayout(new FlowLayout());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        
 
         JPanel panel = new JPanel();
         panel.setBounds(0, 0, 500, 100);
@@ -62,8 +70,6 @@ public class TempConverter extends JFrame {
 
         activateButton(validButton, textfield, textfield2, 0);
         activateButton(validButton2, textfield2, textfield, 1);
-
-        
   
         panel.add(label);
         panel.add(textfield);
@@ -84,6 +90,7 @@ public class TempConverter extends JFrame {
             .addComponent(panel2)
         );
 
+        mainPanel.setOpaque(false);
         add(mainPanel);
     }
 
