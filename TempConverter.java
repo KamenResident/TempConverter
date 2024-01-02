@@ -42,8 +42,6 @@ public class TempConverter extends JFrame {
         setSize(500, 400);
         setLocationRelativeTo(null);
         setResizable(false);
-
-        // Background image for the application.
         try {
             setContentPane(new JLabel(new ImageIcon(ImageIO.read(new File("clouds.jpg")))));
             setLayout(new FlowLayout());
@@ -65,7 +63,6 @@ public class TempConverter extends JFrame {
         layout.setAutoCreateContainerGaps(true);
         mainPanel.setSize(500, 200);
 
-        // Border for the separate Fahrenheit and Celsius panels.
         Border outline = BorderFactory.createLineBorder(Color.BLACK);
 
         // Fahrenheit panel and its components
@@ -73,7 +70,7 @@ public class TempConverter extends JFrame {
         fahrenheitPanel.setBounds(0, 0, 500, 100);
         fahrenheitPanel.setBackground(Color.WHITE);
         fahrenheitPanel.setBorder(outline);
-        JTextField textfield = new JTextField(3);           // Input field for Fahrenheit value.
+        JTextField textfield = new JTextField(3);       
         JLabel label = new JLabel("Fahrenheit (F):");           
         JButton validButton = new JButton("To Celsius");
         validButton.setBackground(Color.ORANGE);
@@ -86,7 +83,7 @@ public class TempConverter extends JFrame {
         celsiusPanel.setBounds(0, 200, 500, 100);
         celsiusPanel.setBackground(Color.WHITE);
         celsiusPanel.setBorder(outline);       
-        JTextField textfield2 = new JTextField(3);          // Input field for Celsius value.        
+        JTextField textfield2 = new JTextField(3);                 
         JLabel label2 = new JLabel("Celsius (C):");      
         JButton validButton2 = new JButton("To Fahrenheit");
         validButton2.setBackground(Color.CYAN);
@@ -94,15 +91,14 @@ public class TempConverter extends JFrame {
         celsiusPanel.add(textfield2);
         celsiusPanel.add(validButton2);
         
-        // Enables functionality of the buttons for temperature conversion.
         activateButton(validButton, textfield, textfield2, 0);
         activateButton(validButton2, textfield2, textfield, 1);
 
-        // Default font for the application.
         Font font = new Font(Font.SANS_SERIF, Font.PLAIN, 14);       
         changeFont(fahrenheitPanel, font);       
         changeFont(celsiusPanel, font);
 
+        // Establish alignment of the Fahrenheit and Celsius panels.
         layout.setHorizontalGroup(
             layout.createSequentialGroup()
             .addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
@@ -121,12 +117,13 @@ public class TempConverter extends JFrame {
     }
 
     /**
+     * Used to add functionality to the buttons for temperature conversion.
      * 
-     * 
-     * @param jb
-     * @param tf
-     * @param tf2
-     * @param choice
+     * @param jb is a Jbutton that enables temperature conversion upon pressing.
+     * @param tf is the input text field.
+     * @param tf2 is the output text field.
+     * @param choice is a value used to determine if the button is meant for Fahrenheit 
+     *        or Celsius values.
      */
     private void activateButton(JButton jb, JTextField tf, JTextField tf2, int choice) {
         jb.addActionListener(new ActionListener() {
@@ -151,10 +148,10 @@ public class TempConverter extends JFrame {
     }
 
     /**
+     * Used to change the font of a component and its children.
      * 
-     * 
-     * @param component
-     * @param font
+     * @param component is the main parent component.
+     * @param font is the font used to change from the default font.
      */
     private static void changeFont (Component component, Font font) {
         component.setFont(font);
